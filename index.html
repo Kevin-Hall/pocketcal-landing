@@ -32,6 +32,73 @@
         }
 
         /* ============================================
+           NAVIGATION
+           Clean minimal nav bar
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 4rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #999999;
+            text-decoration: none;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .nav-cta {
+            padding: 0.625rem 1.25rem;
+            background: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            background: #f0f0f0;
+            transform: translateY(-1px);
+        }
+
+        /* ============================================
            HERO SECTION
            Side-by-side layout with text left, video right
            ============================================ */
@@ -40,7 +107,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6rem 4rem;
+            padding: 8rem 4rem 6rem;
             position: relative;
             
             /* Pure black background */
@@ -115,6 +182,11 @@
            Premium feel with subtle shadows and hover states
            ============================================ */
         .cta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: flex-start;
+            
             /* Fade-up animation with delay */
             animation: fadeUp 0.8s ease-out 0.3s backwards;
         }
@@ -151,6 +223,44 @@
 
         .cta-primary:active {
             transform: translateY(0);
+        }
+
+        /* Social proof badges */
+        .social-proof {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+        }
+
+        .badge-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #666666;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .badge-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .laurel {
+            font-size: 1.25rem;
+            opacity: 0.6;
         }
 
         .apple-logo {
@@ -346,8 +456,24 @@
         }
 
         @media (max-width: 768px) {
+            .nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-content {
+                flex-direction: row;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                display: none;
+            }
+
             .hero {
-                padding: 4rem 1.5rem 3rem;
+                padding: 6rem 1.5rem 3rem;
             }
 
             .hero-content {
@@ -358,6 +484,7 @@
 
             .hero-text {
                 text-align: center;
+                align-items: center;
             }
 
             .eyebrow {
@@ -373,10 +500,23 @@
                 margin-bottom: 2.5rem;
             }
 
+            .cta-group {
+                align-items: center;
+            }
+
             .cta-primary {
                 width: 100%;
                 max-width: 320px;
                 justify-content: center;
+            }
+
+            .social-proof {
+                justify-content: center;
+            }
+
+            .badge {
+                flex: 1;
+                min-width: 140px;
             }
 
             .device-container {
@@ -418,6 +558,24 @@
 </head>
 <body>
     <!-- ============================================
+         NAVIGATION
+         ============================================ -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="#" class="logo">Pocket Cal</a>
+            <div class="nav-links">
+                <a href="mailto:hello@pocketcal.app" class="nav-link">Contact</a>
+                <a href="#" class="nav-cta">
+                    <svg class="apple-logo" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; display: inline; margin-right: 4px;">
+                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                    </svg>
+                    Download
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================
          HERO SECTION
          Side-by-side layout: text left, video right
          ============================================ -->
@@ -438,7 +596,7 @@
                     An intelligent calendar that understands natural language, reads images, and organizes your time without asking you to change how you think.
                 </p>
                 
-                <!-- CTA button -->
+                <!-- CTA button and social proof -->
                 <div class="cta-group">
                     <a href="#" class="cta-primary">
                         <svg class="apple-logo" viewBox="0 0 24 24" fill="currentColor">
@@ -446,6 +604,20 @@
                         </svg>
                         Download for iOS
                     </a>
+                    
+                    <!-- Social proof badges -->
+                    <div class="social-proof">
+                        <div class="badge">
+                            <span class="laurel">🏆</span>
+                            <div class="badge-label">Featured by Apple</div>
+                            <div class="badge-title">App of the Day</div>
+                        </div>
+                        <div class="badge">
+                            <span class="laurel">⭐</span>
+                            <div class="badge-label">Featured by Apple</div>
+                            <div class="badge-title">Editor's Choice</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
