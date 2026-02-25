@@ -54,12 +54,17 @@
             grid-template-columns: 1fr 1.2fr;
             gap: 4rem;
             align-items: center;
+            justify-items: center;
             position: relative;
             z-index: 1;
         }
 
         .hero-text {
             text-align: left;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         /* ============================================
@@ -173,9 +178,8 @@
             position: relative;
             background: #000000;
             
-            /* Subtle shadow for depth */
-            filter: drop-shadow(0 20px 40px rgba(255, 255, 255, 0.08))
-                    drop-shadow(0 8px 16px rgba(255, 255, 255, 0.04));
+            /* No shadows for seamless look */
+            filter: none;
             
             /* Subtle floating animation */
             animation: float 6s ease-in-out infinite;
