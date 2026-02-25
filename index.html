@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PocketCal - Time is sacred. Manage it with ease.</title>
+    <title>Pocket Cal - Time is sacred. Manage it with ease.</title>
     <meta name="description" content="Plan your entire year without the hassle. Snap a pic, write it out, or just speak it. AI-powered calendar and task management that works the way you think.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,71 +22,104 @@
             background: #000000;
             overflow-x: hidden;
             font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
-        /* Header */
-        .header {
-            padding: 6rem 0;
-            text-align: center;
-            background: #000000;
-            color: white;
+        /* Header/Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Hero Section */
+        .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 8rem 0 4rem;
             position: relative;
         }
 
-        .header-content {
-            position: relative;
-            z-index: 2;
+        .hero-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6rem;
+            gap: 8rem;
             align-items: center;
-            max-width: 1100px;
+            max-width: 1400px;
         }
 
-        .header-text {
-            text-align: left;
+        .hero-text {
+            max-width: 600px;
         }
 
-        .app-icon {
-            width: 120px;
-            height: 120px;
-            border-radius: 28px;
-            margin-bottom: 3rem;
-            display: block;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
-        }
-
-        .app-icon:hover {
-            transform: scale(1.05);
-        }
-
-        .main-headline {
-            font-size: 4rem;
-            font-weight: 800;
+        .hero-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
             margin-bottom: 2rem;
-            line-height: 1.1;
-            color: #ffffff;
-            letter-spacing: -0.02em;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .subtitle {
-            font-size: 1.4rem;
-            margin-bottom: 3rem;
+        .hero-headline {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            line-height: 1.7;
             color: #a0a0a0;
-            line-height: 1.6;
+            margin-bottom: 3rem;
             font-weight: 400;
-            letter-spacing: -0.01em;
         }
 
         .cta-button {
@@ -97,23 +130,16 @@
             background: #ffffff;
             color: #000000;
             text-decoration: none;
-            border-radius: 16px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 1rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
         }
 
         .cta-button:hover {
             transform: translateY(-2px);
-            background: #f8f8f8;
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
-        }
-
-        .apple-logo {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
         }
 
         .button-text {
@@ -126,7 +152,7 @@
         .button-text .small {
             font-size: 0.7rem;
             font-weight: 400;
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         .button-text .large {
@@ -134,22 +160,35 @@
             font-weight: 600;
         }
 
-        /* App Demo */
-        .app-demo {
+        .apple-logo {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Phone Mockup */
+        .hero-mockup {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .phone-mockup {
-            width: 320px;
-            height: 640px;
+        .phone-container {
+            position: relative;
+            width: 360px;
+            height: 720px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            height: 100%;
             background: #1a1a1a;
-            border-radius: 40px;
-            padding: 10px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-            margin: 0 auto;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 50px 100px rgba(0, 0, 0, 0.8);
             position: relative;
         }
 
@@ -157,7 +196,7 @@
             width: 100%;
             height: 100%;
             background: #000000;
-            border-radius: 30px;
+            border-radius: 40px;
             overflow: hidden;
             position: relative;
         }
@@ -166,7 +205,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 30px;
         }
 
         /* Features Section */
@@ -175,56 +213,69 @@
             background: #000000;
         }
 
-        .section-title {
+        .section-header {
             text-align: center;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 4rem;
+            max-width: 800px;
+            margin: 0 auto 6rem;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
             color: #ffffff;
-            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #a0a0a0;
+            line-height: 1.7;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
         }
 
         .feature-card {
-            background: #111111;
-            padding: 3rem 2rem;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid #222222;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 3rem 2.5rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-8px);
         }
 
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
+            display: block;
         }
 
         .feature-title {
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 1rem;
             color: #ffffff;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
         .feature-description {
             font-size: 1rem;
             color: #a0a0a0;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        /* How it Works Section */
+        /* How it Works */
         .how-it-works {
             padding: 8rem 0;
             background: #000000;
@@ -232,50 +283,48 @@
 
         .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 4rem;
             margin-top: 4rem;
         }
 
         .step {
             text-align: center;
-            position: relative;
         }
 
         .step-number {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             margin: 0 auto 2rem;
             color: #000000;
         }
 
         .step-title {
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 1rem;
             color: #ffffff;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
         .step-description {
             color: #a0a0a0;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-size: 1rem;
         }
 
         /* Footer */
         .footer {
-            padding: 4rem 0;
+            padding: 4rem 0 3rem;
             background: #000000;
-            color: #a0a0a0;
-            text-align: center;
-            border-top: 1px solid #222222;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .footer-content {
@@ -286,9 +335,27 @@
             gap: 2rem;
         }
 
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+
+        .footer-logo-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
         .footer-links {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             flex-wrap: wrap;
         }
 
@@ -297,64 +364,84 @@
             text-decoration: none;
             transition: color 0.3s ease;
             font-weight: 500;
+            font-size: 0.95rem;
         }
 
         .footer-links a:hover {
             color: #ffffff;
         }
 
-        .footer-email {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #666666;
+            font-size: 0.9rem;
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .header-content {
+        @media (max-width: 1024px) {
+            .hero-content {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+                gap: 4rem;
                 text-align: center;
             }
 
-            .header-text {
-                text-align: center;
+            .hero-text {
+                max-width: 100%;
             }
 
-            .main-headline {
-                font-size: 2.8rem;
-            }
-
-            .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                font-size: 2.5rem;
+            .hero-headline {
+                font-size: 3.5rem;
             }
 
             .features-grid {
                 grid-template-columns: 1fr;
-                gap: 2rem;
             }
 
             .steps {
                 grid-template-columns: 1fr;
                 gap: 3rem;
             }
+        }
 
-            .phone-mockup {
-                width: 280px;
-                height: 560px;
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
             }
 
-            .app-icon {
-                width: 100px;
-                height: 100px;
+            .nav-content {
+                padding: 0 1.5rem;
+            }
+
+            .hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .hero-headline {
+                font-size: 2.5rem;
+            }
+
+            .hero-description {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .phone-container {
+                width: 300px;
+                height: 600px;
+            }
+
+            .features,
+            .how-it-works {
+                padding: 5rem 0;
             }
 
             .footer-content {
@@ -369,14 +456,24 @@
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <img src="app-icon.png" alt="Pocket Cal" class="logo-icon">
+                <span class="logo-text">Pocket Cal</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="container">
-            <div class="header-content">
-                <div class="header-text">
-                    <img src="app-icon.png" alt="PocketCal App Icon" class="app-icon">
-                    <h1 class="main-headline">Time is sacred.<br>Manage it with ease.</h1>
-                    <p class="subtitle">Plan your entire year without the hassle. Snap a pic, write it out, or just speak it. AI-powered calendar and task management that works the way you think.</p>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <img src="app-icon.png" alt="Pocket Cal Icon" class="hero-icon">
+                    <h1 class="hero-headline">Time is sacred. Manage it with ease.</h1>
+                    <p class="hero-description">Plan your entire year without the hassle. Snap a pic, write it out, or just speak it. AI-powered calendar and task management that works the way you think.</p>
                     <a href="#" class="cta-button">
                         <svg class="apple-logo" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
@@ -387,39 +484,85 @@
                         </div>
                     </a>
                 </div>
-                <div class="app-demo">
-                    <div class="phone-mockup">
-                        <div class="phone-screen">
-                            <video class="demo-video" autoplay loop muted playsinline>
-                                <source src="demo-video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                <div class="hero-mockup">
+                    <div class="phone-container">
+                        <div class="phone-frame">
+                            <div class="phone-screen">
+                                <video class="demo-video" autoplay loop muted playsinline>
+                                    <source src="demo-video.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
     <!-- How it Works Section -->
     <section class="how-it-works">
         <div class="container">
-            <h2 class="section-title">Planning your days made easy with AI</h2>
+            <div class="section-header">
+                <h2 class="section-title">Planning your days made easy with AI</h2>
+                <p class="section-subtitle">Natural language processing that understands how you think and organizes your life accordingly.</p>
+            </div>
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3 class="step-title">Snap a pic, write it out, or just speak it</h3>
+                    <h3 class="step-title">Snap, write, or speak</h3>
                     <p class="step-description">Type naturally or speak to create events and tasks. Our AI understands your language and converts it into organized calendar entries.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3 class="step-title">Ready to launch your goals into space?</h3>
-                    <p class="step-description">Your plans are instantly organized and scheduled. No more manual entry or complex setup - just natural communication.</p>
+                    <h3 class="step-title">AI does the work</h3>
+                    <p class="step-description">Your plans are instantly organized and scheduled. No more manual entry or complex setup—just natural communication.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3 class="step-title">Plan your entire year without the hassle</h3>
-                    <p class="step-description">View your schedule at a glance with our intuitive calendar interface. Track progress and stay organized effortlessly.</p>
+                    <h3 class="step-title">Stay organized effortlessly</h3>
+                    <p class="step-description">View your schedule at a glance with our intuitive calendar interface. Track progress and manage your time like never before.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Everything you need to manage your time</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3 class="feature-title">Natural Language Input</h3>
+                    <p class="feature-description">Just type or speak naturally. "Meeting with Sarah tomorrow at 3pm" becomes a scheduled event instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📸</span>
+                    <h3 class="feature-title">Image Recognition</h3>
+                    <p class="feature-description">Snap a photo of a schedule, poster, or note. AI extracts and organizes all the information automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title">Smart AI Assistant</h3>
+                    <p class="feature-description">Intelligent suggestions and automatic scheduling that learns from your habits and preferences.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📅</span>
+                    <h3 class="feature-title">Unified Calendar View</h3>
+                    <p class="feature-description">See your entire year at a glance. Switch between day, month, and year views seamlessly.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">✅</span>
+                    <h3 class="feature-title">Task Management</h3>
+                    <p class="feature-description">Events and tasks in one place. Complete, reschedule, or edit with simple gestures.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3 class="feature-title">Privacy First</h3>
+                    <p class="feature-description">All your data stays on your device. No accounts needed, no tracking, complete privacy.</p>
                 </div>
             </div>
         </div>
@@ -429,14 +572,18 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="app-icon.png" alt="Pocket Cal" class="footer-logo-icon">
+                    <span class="footer-logo-text">Pocket Cal</span>
+                </div>
                 <div class="footer-links">
-                    <a href="#">Terms of Use</a>
                     <a href="#">Privacy Policy</a>
-                    <a href="#">Support</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="mailto:hello@pocketcal.app">Contact Support</a>
                 </div>
-                <div>
-                    <a href="mailto:hello@pocketcal.app" class="footer-email">hello@pocketcal.app</a>
-                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Pocket Cal. All rights reserved.</p>
             </div>
         </div>
     </footer>
