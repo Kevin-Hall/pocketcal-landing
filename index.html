@@ -3,1157 +3,1738 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pocket Cal — Your day, without the noise.</title>
-    <meta name="description" content="Pocket Cal is the lightweight, customizable iPhone calendar built for daily clarity — not for managing your life.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <title>Pocket Cal — Your brain was never meant to be a calendar</title>
+    <meta name="description" content="Say it, snap it, forget it. Pocket Cal's AI catches every commitment so your head doesn't have to. Free on iOS.">
+    <meta property="og:title" content="Pocket Cal">
+    <meta property="og:description" content="Your brain was never meant to be a calendar. Say it, snap it, forget it.">
+    <meta property="og:image" content="media/og-hero.jpg">
+    <link rel="icon" href="app-icon.png">
+    <link rel="apple-touch-icon" href="app-icon.png">
     <style>
-        /* ============================================
-           RESET & BASE
-           ============================================ */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #08080a;
-            --bg-elevated: #101014;
-            --white: #ffffff;
-            --gray-100: #f0f0f0;
-            --gray-400: #888888;
-            --gray-500: #666666;
-            --gray-600: #444444;
-            --gray-700: #2a2a2e;
-            --gray-800: #1a1a1e;
-            --border: rgba(255,255,255,0.07);
-            --glow-violet: rgba(120, 100, 220, 0.18);
-            --glow-warm: rgba(255, 180, 100, 0.08);
-            --radius-sm: 12px;
-            --radius-md: 20px;
-            --radius-lg: 28px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --white: #FFFFFF;
+            --black: #0A0A0A;
+            --grey:  #8A8A8A;
+            --grey-light: #E9E9E9;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         html {
+            scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            scroll-behavior: smooth;
+            text-rendering: optimizeLegibility;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--white);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.5;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* ============================================
-           NAVIGATION
-           ============================================ */
-        .nav {
+        ::selection { background: var(--black); color: var(--white); }
+
+        img, video { display: block; max-width: 100%; }
+
+        /* ============ TOP BAR ============ */
+        .bar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 1.5rem 2.5rem;
+            inset: 0 0 auto 0;
+            z-index: 10;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            background: rgba(8, 8, 10, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            padding: 1.25rem clamp(1.5rem, 4vw, 3rem);
+            background: color-mix(in srgb, var(--white) 58%, transparent);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
         }
 
-        .nav-logo {
+        .wordmark {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.625rem;
             text-decoration: none;
+            color: var(--black);
         }
 
-        .nav-logo-icon {
-            width: 28px;
-            height: 28px;
+        .wordmark img {
+            width: 26px;
+            height: 26px;
             border-radius: 7px;
-            overflow: hidden;
-            flex-shrink: 0;
+            filter: grayscale(1);
         }
 
-        .nav-logo-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .nav-logo-text {
+        .wordmark span {
             font-size: 0.9375rem;
-            font-weight: 500;
-            color: var(--white);
+            font-weight: 600;
             letter-spacing: -0.02em;
         }
 
-        .nav-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.5rem 1.125rem;
-            background: var(--white);
-            color: #000;
-            text-decoration: none;
-            border-radius: 40px;
-            font-weight: 500;
+        .bar .btn {
             font-size: 0.8125rem;
-            letter-spacing: -0.01em;
-            transition: background var(--transition);
+            padding: 0.5625rem 1.25rem;
         }
 
-        .nav-cta:hover {
-            background: var(--gray-100);
-        }
-
-        /* ============================================
-           HERO
-           ============================================ */
-        .hero {
-            min-height: 100svh;
-            display: grid;
-            grid-template-columns: 5fr 6fr;
-            align-items: center;
-            gap: 4rem;
-            padding: 8rem 5rem 4rem;
-            max-width: 1500px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        /* Ambient background glow */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 10%;
-            right: 5%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(ellipse at center, var(--glow-violet) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: 20%;
-            left: 10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(ellipse at center, var(--glow-warm) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .hero-text {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-badge {
+        /* ============ BUTTON ============ */
+        .btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            padding: 0.375rem 0.875rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--gray-400);
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: rise 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
-        }
-
-        .badge-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #7b6fd4;
-            flex-shrink: 0;
-        }
-
-        .hero-headline {
-            font-size: clamp(2.75rem, 5.5vw, 5.25rem);
-            font-weight: 600;
-            line-height: 1.04;
-            letter-spacing: -0.05em;
+            gap: 0.625rem;
+            background: var(--black);
             color: var(--white);
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            animation: rise 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.25s forwards;
-        }
-
-        .hero-headline em {
-            font-style: normal;
-            color: var(--gray-400);
-        }
-
-        .hero-sub {
-            font-size: clamp(1rem, 1.75vw, 1.1875rem);
-            font-weight: 400;
-            line-height: 1.75;
-            color: var(--gray-400);
-            max-width: 480px;
-            margin-bottom: 2.5rem;
-            opacity: 0;
-            animation: rise 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
-        }
-
-        .hero-cta-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.875rem;
-            opacity: 0;
-            animation: rise 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.55s forwards;
-        }
-
-        .cta-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.9375rem 2.25rem;
-            background: var(--white);
-            color: #000;
             text-decoration: none;
-            border-radius: 40px;
-            font-weight: 600;
             font-size: 0.9375rem;
-            letter-spacing: -0.02em;
-            transition: all var(--transition);
-            position: relative;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            padding: 0.9375rem 1.75rem;
+            border-radius: 100px;
+            white-space: nowrap;
+            transition: transform 0.35s var(--ease), opacity 0.35s ease;
         }
 
-        .cta-primary::after {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: 40px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-            pointer-events: none;
-        }
+        .btn:hover { transform: translateY(-2px); opacity: 0.85; }
 
-        .cta-primary:hover {
-            background: var(--gray-100);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(255,255,255,0.15);
-        }
-
-        .apple-icon {
+        .btn svg {
             width: 15px;
             height: 15px;
             fill: currentColor;
             flex-shrink: 0;
         }
 
-        .cta-microcopy {
+        .btn-note {
+            display: block;
+            margin-top: 1rem;
             font-size: 0.8125rem;
-            color: var(--gray-500);
-            font-weight: 400;
+            color: var(--grey);
             letter-spacing: 0;
         }
 
-        /* ============================================
-           HERO VIDEO / PHONE
-           ============================================ */
-        .hero-visual {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            animation: rise 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+        /* ============ AMBIENT GLOWS ============ */
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.55;
+            pointer-events: none;
+            z-index: -1;
+            animation: drift 18s ease-in-out infinite alternate;
         }
 
-        .phone-glow {
-            display: none;
+        .glow-a { width: 480px; height: 480px; top: -6%;  left: -8%;
+                  background: radial-gradient(circle, #c7d2fe, transparent 70%); }
+        .glow-b { width: 440px; height: 440px; top: 8%;   right: -10%;
+                  background: radial-gradient(circle, #fbcfe8, transparent 70%);
+                  animation-delay: -6s; }
+        .glow-c { width: 560px; height: 560px; top: 10%;  left: calc(50% - 280px);
+                  background: radial-gradient(circle, #bae6fd, transparent 70%);
+                  animation-delay: -12s; }
+        .glow-d { width: 460px; height: 460px; top: -4%;  left: calc(50% - 230px);
+                  background: radial-gradient(circle, #ddd6fe, transparent 70%);
+                  animation-delay: -9s; }
+        .glow-e { width: 500px; height: 500px; bottom: 0; left: calc(50% - 250px);
+                  background: radial-gradient(circle, #fde8c8, transparent 70%);
+                  animation-delay: -4s; }
+        .glow-f { width: 520px; height: 520px; top: 10%; left: calc(50% - 260px);
+                  background: radial-gradient(circle, #a7f3d0, transparent 70%);
+                  animation-delay: -15s; }
+
+        @keyframes drift {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(45px, -35px) scale(1.12); }
+        }
+
+        /* ============ GLASS ============ */
+        .glass {
+            background: color-mix(in srgb, var(--white) 52%, transparent);
+            backdrop-filter: blur(18px) saturate(1.7);
+            -webkit-backdrop-filter: blur(18px) saturate(1.7);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.07),
+                inset 0 1px 0 rgba(255, 255, 255, 0.75);
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--black);
+            padding: 0.5625rem 1.25rem;
+            border-radius: 100px;
+            margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+            opacity: 0;
+            animation: fade 1s var(--ease) 0.1s forwards;
+        }
+
+        .chip .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #34d399;
+            box-shadow: 0 0 8px #34d399;
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            position: relative;
+            padding: clamp(5.5rem, 9vh, 7rem) clamp(1.5rem, 4vw, 3rem) 0;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: clamp(2rem, 5vw, 4rem);
+            max-width: 1120px;
+            margin: 0 auto;
+            min-height: calc(100svh - 11rem);
+        }
+
+        .hero-copy { text-align: left; }
+
+        .hero h1 {
+            font-size: clamp(2.625rem, 4.9vw, 4.875rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 0.98;
+            max-width: 14ch;
+            text-wrap: balance;
+        }
+
+        .hero h1 .line { display: block; overflow: hidden; }
+
+        .hero h1 .line span {
+            display: block;
+            transform: translateY(110%);
+            animation: lineUp 1.1s var(--ease) forwards;
+        }
+
+        .hero h1 .line:nth-child(2) span { animation-delay: 0.08s; }
+        .hero h1 .line:nth-child(3) span { animation-delay: 0.16s; }
+
+        .hero h1 em { font-style: normal; color: var(--grey); }
+
+        .hero-sub {
+            font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+            color: var(--grey);
+            line-height: 1.65;
+            text-wrap: pretty;
+            max-width: 30rem;
+            margin: clamp(1.25rem, 3vh, 1.875rem) 0 0;
+            opacity: 0;
+            animation: fade 1.2s var(--ease) 0.45s forwards;
+        }
+
+        .hero-cta {
+            text-align: left;
+            margin-top: clamp(1.25rem, 3vh, 1.875rem);
+            opacity: 0;
+            animation: fade 1.2s var(--ease) 0.6s forwards;
+        }
+
+        @media (max-width: 900px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                min-height: 0;
+                gap: 1rem;
+            }
+            .hero-copy { text-align: center; }
+            .hero h1 { margin-inline: auto; font-size: clamp(2.625rem, 9vw, 4rem); }
+            .hero-sub { margin-inline: auto; }
+            .hero-cta { text-align: center; }
+        }
+
+        /* ============ PHONE (3D) ============ */
+        .stage {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0 2.5rem;
+            perspective: 1700px;
+            perspective-origin: 50% 35%;
+        }
+
+        .phone-shadow {
+            position: absolute;
+            left: 50%;
+            bottom: -0.5rem;
+            width: min(320px, 68vw);
+            height: 56px;
+            background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.30), transparent 70%);
+            filter: blur(10px);
+            transform: translateX(-50%) scaleX(var(--shx, 1));
+            opacity: var(--sho, 0.8);
+            pointer-events: none;
+        }
+
+        .phone {
+            position: relative;
+            width: min(340px, 76vw, 36svh);
+            transform-style: preserve-3d;
+            transform: rotateX(12deg) rotateY(-24deg) translateY(60px);
+            will-change: transform;
+        }
+
+        /* chassis depth — dark plate sitting behind the frame */
+        .phone::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: clamp(44px, 12vw, 58px);
+            background: linear-gradient(180deg, #2c2c2e, #0b0b0c);
+            transform: translateZ(-14px);
         }
 
         .phone-frame {
             position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 440px;
+            border-radius: clamp(44px, 12vw, 58px);
+            padding: 3px;
+            background: linear-gradient(145deg,
+                #e9e9eb 0%, #98989e 7%, #3a3a3e 18%, #29292d 34%,
+                #7c7c83 50%, #29292d 66%, #3a3a3e 82%, #d8d8dc 94%, #8e8e94 100%);
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.35),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.5);
+            filter: drop-shadow(0 30px 35px rgba(0, 0, 0, 0.18));
+            animation: phoneFloat 7s ease-in-out infinite alternate;
         }
 
-        /* Fade edges into the page background color */
-        .phone-frame::after {
-            content: '';
+        .phone-bezel {
+            background: #0a0a0b;
+            border-radius: calc(clamp(44px, 12vw, 58px) - 3px);
+            padding: clamp(9px, 2.2vw, 12px);
+        }
+
+        .phone-screen {
+            position: relative;
+            aspect-ratio: 9 / 19.5;
+            border-radius: clamp(32px, 9vw, 42px);
+            overflow: hidden;
+            background: #000;
+        }
+
+        .phone-screen video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .island {
+            position: absolute;
+            top: clamp(8px, 2vw, 11px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(70px, 19vw, 92px);
+            height: clamp(20px, 5.5vw, 26px);
+            background: #000;
+            border-radius: 100px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+        }
+
+        .glare {
             position: absolute;
             inset: 0;
-            background:
-                linear-gradient(to right,  #08080a 0%, transparent 14%, transparent 86%, #08080a 100%),
-                linear-gradient(to bottom, #08080a 0%, transparent 5%,  transparent 95%, #08080a 100%);
             pointer-events: none;
-            z-index: 2;
+            background: linear-gradient(115deg,
+                transparent 34%, rgba(255, 255, 255, 0.16) 47%,
+                rgba(255, 255, 255, 0.04) 55%, transparent 66%);
+            background-size: 300% 100%;
+            background-position: var(--glare, 40%) 0;
+            mix-blend-mode: screen;
         }
 
-        .phone-video {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            display: block;
+        /* side buttons */
+        .pbtn {
+            position: absolute;
+            width: 3px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #55555b, #1e1e21);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
         }
 
-        /* ============================================
-           SOCIAL PROOF STRIP
-           ============================================ */
-        .proof-strip {
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            padding: 3rem 2.5rem;
-            overflow: hidden;
+        .pbtn-action { left: -2.5px; top: 17%;   height: 4.5%; }
+        .pbtn-volup  { left: -2.5px; top: 25%;   height: 7.5%; }
+        .pbtn-voldn  { left: -2.5px; top: 34.5%; height: 7.5%; }
+        .pbtn-power  { right: -2.5px; top: 28%;  height: 11%;
+                       background: linear-gradient(-90deg, #55555b, #1e1e21); }
+
+        @keyframes phoneFloat {
+            from { transform: translateY(-5px); }
+            to   { transform: translateY(6px); }
         }
 
-        .proof-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-        }
-
-        .proof-item {
+        /* ============ THEATER ============ */
+        .theater {
+            position: relative;
             text-align: center;
+            padding: clamp(8rem, 15vw, 12rem) 1.5rem 0;
         }
 
-        .proof-stars {
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            color: #f0c040;
-            margin-bottom: 0.75rem;
-        }
-
-        .proof-quote {
-            font-size: 0.9375rem;
-            font-weight: 400;
-            line-height: 1.6;
-            color: var(--gray-100);
-            margin-bottom: 0.625rem;
-            font-style: italic;
-        }
-
-        .proof-author {
-            font-size: 0.8125rem;
-            color: var(--gray-500);
-        }
-
-        /* ============================================
-           VALUE PROPS
-           ============================================ */
-        .section {
-            padding: 9rem 2.5rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .section-eyebrow {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--gray-500);
-            text-align: center;
-            margin-bottom: 1.25rem;
-        }
-
-        .section-headline {
-            font-size: clamp(2.25rem, 4.5vw, 3.75rem);
-            font-weight: 600;
+        .theater-head {
+            font-size: clamp(1.75rem, 4.5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
             line-height: 1.1;
-            letter-spacing: -0.045em;
-            color: var(--white);
-            text-align: center;
-            margin-bottom: 1.25rem;
+            text-wrap: balance;
         }
 
-        .section-sub {
-            font-size: clamp(1rem, 1.5vw, 1.125rem);
-            color: var(--gray-400);
-            text-align: center;
-            max-width: 580px;
-            margin: 0 auto 6rem;
-            line-height: 1.75;
-            font-weight: 400;
+        .theater-head em { font-style: normal; color: var(--grey); }
+
+        /* mode tabs */
+        .modes {
+            display: inline-flex;
+            gap: 0.25rem;
+            padding: 0.3125rem;
+            border-radius: 100px;
+            margin: 2.25rem auto 2.5rem;
         }
 
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            background: var(--border);
+        .mode {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--grey);
+            padding: 0.5625rem 1.125rem;
+            border-radius: 100px;
+            transition: background 0.45s var(--ease), color 0.45s var(--ease);
         }
 
-        .value-card {
-            background: var(--bg-elevated);
-            padding: 3rem 2.75rem;
-            transition: background var(--transition);
+        .mode svg {
+            width: 15px;
+            height: 15px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        .value-card:hover {
-            background: #141418;
-        }
+        .mode.active { background: var(--black); color: var(--white); }
 
-        .value-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
+        /* input stage */
+        .io {
+            position: relative;
+            width: min(430px, 90vw);
+            min-height: 200px;
+            margin: 0 auto;
+            border-radius: 26px;
+            padding: 1.75rem 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.125rem;
-        }
-
-        .value-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--white);
-            letter-spacing: -0.03em;
-            margin-bottom: 0.75rem;
-            line-height: 1.2;
-        }
-
-        .value-body {
-            font-size: 0.9375rem;
-            line-height: 1.75;
-            color: var(--gray-400);
-            font-weight: 400;
-        }
-
-        /* ============================================
-           DIFFERENTIATION
-           ============================================ */
-        .diff-section {
-            padding: 9rem 2.5rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .diff-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5px;
-            background: var(--border);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
             overflow: hidden;
-            margin-top: 5rem;
         }
 
-        .diff-col {
-            background: var(--bg-elevated);
-            padding: 2.5rem 2.25rem;
+        .vis {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.125rem;
+            width: 100%;
         }
 
-        .diff-col--highlight {
-            background: #111115;
+        [data-mode="say"]  .vis-say  { display: flex; }
+        [data-mode="type"] .vis-type { display: flex; }
+        [data-mode="snap"] .vis-snap { display: flex; }
+
+        /* — say it: mic + waveform — */
+        .mic {
             position: relative;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--black);
+            display: grid;
+            place-items: center;
         }
 
-        .diff-col--highlight::before {
+        .mic svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .mic::before, .mic::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(120,100,220,0), rgba(120,100,220,0.8), rgba(120,100,220,0));
+            inset: 0;
+            border-radius: 50%;
+            border: 1.5px solid rgba(10, 10, 10, 0.3);
+            opacity: 0;
         }
 
-        .diff-tag {
-            display: inline-block;
-            font-size: 0.6875rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 0.25rem 0.625rem;
-            border-radius: 4px;
-            margin-bottom: 1.25rem;
+        .speaking .mic::before { animation: pulse 1.8s ease-out infinite; }
+        .speaking .mic::after  { animation: pulse 1.8s ease-out 0.9s infinite; }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.8; }
+            to   { transform: scale(2); opacity: 0; }
         }
 
-        .diff-tag--neutral {
-            background: rgba(255,255,255,0.05);
-            color: var(--gray-500);
-            border: 1px solid rgba(255,255,255,0.07);
+        .eq { display: flex; align-items: center; gap: 4px; height: 26px; }
+
+        .eq span {
+            width: 4px;
+            height: 7px;
+            border-radius: 2px;
+            background: var(--black);
         }
 
-        .diff-tag--highlight {
-            background: rgba(120,100,220,0.15);
-            color: #a99df0;
-            border: 1px solid rgba(120,100,220,0.25);
-        }
+        .speaking .eq span { animation: eq 0.75s ease-in-out infinite alternate; }
+        .eq span:nth-child(1) { animation-delay: 0s; }
+        .eq span:nth-child(2) { animation-delay: 0.14s; }
+        .eq span:nth-child(3) { animation-delay: 0.05s; }
+        .eq span:nth-child(4) { animation-delay: 0.22s; }
+        .eq span:nth-child(5) { animation-delay: 0.1s; }
 
-        .diff-app-name {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--white);
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-        }
+        @keyframes eq { from { height: 6px; } to { height: 26px; } }
 
-        .diff-items {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.875rem;
-        }
-
-        .diff-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.625rem;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .diff-item-icon {
-            flex-shrink: 0;
-            margin-top: 0.1rem;
-            font-size: 0.75rem;
-            width: 16px;
-        }
-
-        .diff-item--pro {
-            color: var(--gray-100);
-        }
-
-        .diff-item--pro .diff-item-icon { color: #7b6fd4; }
-
-        .diff-item--con {
-            color: var(--gray-500);
-        }
-
-        .diff-item--con .diff-item-icon { color: var(--gray-600); }
-
-        /* ============================================
-           FEATURES
-           ============================================ */
-        .features-section {
-            padding: 9rem 2.5rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .features-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5px;
-            background: var(--border);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-top: 5rem;
-        }
-
-        .feature-row {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            background: var(--bg-elevated);
-            transition: background var(--transition);
-            align-items: center;
-        }
-
-        .feature-row:hover {
-            background: #131317;
-        }
-
-        .feature-label {
-            padding: 2.25rem 2.75rem;
-            border-right: 1.5px solid var(--border);
-        }
-
-        .feature-label-text {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--white);
-            letter-spacing: -0.025em;
-            line-height: 1.2;
-        }
-
-        .feature-detail {
-            padding: 2.25rem 2.75rem;
-        }
-
-        .feature-detail-text {
-            font-size: 0.9375rem;
-            line-height: 1.75;
-            color: var(--gray-400);
-        }
-
-        .feature-detail-text strong {
-            color: var(--gray-100);
+        .say-text {
+            font-size: clamp(1.0625rem, 2.4vw, 1.25rem);
             font-weight: 500;
+            letter-spacing: -0.02em;
+            min-height: 1.5em;
         }
 
-        /* ============================================
-           FINAL CTA
-           ============================================ */
-        .final-cta {
-            padding: 9rem 2.5rem 10rem;
-            text-align: center;
+        /* — type it: input field — */
+        .field {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--grey-light);
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .field svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            fill: none;
+            stroke: var(--grey);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        .type-text { font-size: 1.0625rem; min-height: 1.5em; }
+
+        .field-hint { font-size: 0.8125rem; color: var(--grey); }
+
+        /* — snap it: flyer photo + scan — */
+        .flyer {
             position: relative;
+            width: 200px;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--grey-light);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+            transform: rotate(-2deg);
             overflow: hidden;
+            padding-bottom: 14px;
         }
 
-        .final-cta::before {
-            content: '';
+        .flyer-band { height: 36px; background: linear-gradient(90deg, #fbcfe8, #ddd6fe); }
+
+        .flyer-line {
+            height: 7px;
+            border-radius: 4px;
+            background: var(--grey-light);
+            margin: 11px 16px 0;
+        }
+
+        .flyer-line.short { width: 55%; }
+
+        .flyer-line.hl {
+            background: #fde68a;
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .scanned .flyer-line.hl {
+            background: #fcd34d;
+            box-shadow: 0 0 0 4px rgba(252, 211, 77, 0.4);
+        }
+
+        .scanline {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 700px;
-            height: 400px;
-            background: radial-gradient(ellipse at center, rgba(100, 80, 200, 0.14) 0%, transparent 70%);
-            pointer-events: none;
+            left: 6px;
+            right: 6px;
+            height: 2px;
+            border-radius: 2px;
+            background: #34d399;
+            box-shadow: 0 0 14px #34d399;
+            top: 6%;
+            opacity: 0;
         }
 
-        .final-cta-inner {
-            position: relative;
-            z-index: 1;
-            max-width: 700px;
-            margin: 0 auto;
+        .scanning .scanline { opacity: 1; animation: scan 1.5s ease-in-out forwards; }
+
+        @keyframes scan { from { top: 6%; } to { top: 92%; } }
+
+        .snap-text {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.875rem;
+            color: var(--grey);
+            min-height: 1.4em;
         }
 
-        .final-cta-headline {
-            font-size: clamp(2rem, 4.5vw, 3.75rem);
-            font-weight: 600;
-            line-height: 1.1;
-            letter-spacing: -0.045em;
-            color: var(--white);
-            margin-bottom: 1.25rem;
-        }
-
-        .final-cta-sub {
-            font-size: 1.0625rem;
-            color: var(--gray-400);
-            margin-bottom: 3rem;
-            line-height: 1.7;
-            font-weight: 400;
-        }
-
-        .final-cta-group {
+        /* — flow into the calendar — */
+        .flow {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.875rem;
+            gap: 7px;
+            margin: 1.375rem auto 0.125rem;
         }
 
-        .cta-secondary-note {
-            font-size: 0.8125rem;
-            color: var(--gray-600);
+        .flow span {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--grey-light);
+            transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
         }
 
-        /* ============================================
-           FOOTER
-           ============================================ */
-        .footer {
-            padding: 2.5rem;
-            border-top: 1px solid var(--border);
+        .flow.go span {
+            background: #34d399;
+            box-shadow: 0 0 10px rgba(52, 211, 153, 0.9);
+            transform: scale(1.25);
+        }
+
+        .flow.go span:nth-child(2) { transition-delay: 0.12s; }
+        .flow.go span:nth-child(3) { transition-delay: 0.24s; }
+
+        .t-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--black);
+            vertical-align: -0.12em;
+            margin-left: 2px;
+            animation: blink 1.05s steps(1) infinite;
+        }
+
+        .t-card {
+            margin: 2.75rem auto 0;
+            width: min(340px, 88vw);
+            background: color-mix(in srgb, var(--white) 48%, transparent);
+            backdrop-filter: blur(20px) saturate(1.7);
+            -webkit-backdrop-filter: blur(20px) saturate(1.7);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 1.375rem 1.625rem 1.5rem;
+            text-align: left;
+            box-shadow:
+                0 24px 60px rgba(0, 0, 0, 0.09),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            transform: translateY(18px) scale(0.96);
+            transition: opacity 0.55s var(--ease), transform 0.65s var(--ease);
+        }
+
+        .t-card.show { opacity: 1; transform: none; }
+
+        .t-check {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 0.4375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--grey);
+            margin-bottom: 0.875rem;
+        }
+
+        .t-check svg {
+            width: 13px;
+            height: 13px;
+            stroke: var(--black);
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .t-title {
+            font-size: 1.3125rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+        }
+
+        .t-when {
+            font-size: 0.875rem;
+            color: var(--grey);
+            margin-top: 0.3125rem;
+        }
+
+        .theater-tail {
+            margin-top: 3rem;
+            font-size: 0.9375rem;
+            color: var(--grey);
+        }
+
+        /* ============ THEMES ============ */
+        .themes {
+            position: relative;
+            text-align: center;
+            padding: clamp(8rem, 15vw, 12rem) clamp(1.5rem, 4vw, 3rem) 0;
+        }
+
+        .themes-head {
+            font-size: clamp(2rem, 5.5vw, 3.75rem);
+            font-weight: 700;
+            letter-spacing: -0.045em;
+            line-height: 1.05;
+            text-wrap: balance;
+        }
+
+        .themes-head em { font-style: normal; color: var(--grey); }
+
+        .themes-sub {
+            margin-top: 0.875rem;
+            font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+            color: var(--grey);
+        }
+
+        .swatches {
+            display: inline-flex;
+            gap: 0.25rem;
+            padding: 0.3125rem;
+            border-radius: 100px;
+            margin: 2rem auto 2.75rem;
+        }
+
+        .swatch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--grey);
+            padding: 0.5625rem 1.125rem;
+            border-radius: 100px;
+            border: 0;
+            background: transparent;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.45s var(--ease), color 0.45s var(--ease);
+        }
+
+        .swatch .sw {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+        }
+
+        .swatch.active { background: var(--black); color: var(--white); }
+
+        .swatch.more { cursor: default; opacity: 0.65; font-weight: 500; }
+
+        .theme-stage {
+            position: relative;
+            width: min(400px, 84vw);
+            margin: 0 auto;
+            aspect-ratio: 2160 / 3840;
+        }
+
+        .theme-stage img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.985);
+            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+        }
+
+        .theme-stage img.active { opacity: 1; transform: none; }
+
+        /* ============ MANIFESTO ============ */
+        .manifesto {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: clamp(9rem, 18vw, 15rem) clamp(1.5rem, 4vw, 3rem) clamp(6rem, 12vw, 10rem);
+            display: grid;
+            gap: clamp(4rem, 9vw, 7rem);
+        }
+
+        .manifesto p {
+            font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.25;
+            text-wrap: balance;
+        }
+
+        .manifesto p em { font-style: normal; color: var(--grey); }
+
+        /* ============ PAYOFF ============ */
+        .payoff {
+            position: relative;
+            text-align: center;
+            padding: 0 clamp(1.5rem, 4vw, 3rem) clamp(7rem, 13vw, 11rem);
+        }
+
+        .payoff-head {
+            font-size: clamp(2rem, 5.5vw, 3.75rem);
+            font-weight: 700;
+            letter-spacing: -0.045em;
+            line-height: 1.05;
+            margin-bottom: clamp(2.5rem, 6vw, 4rem);
+            text-wrap: balance;
+        }
+
+        .payoff-head em { font-style: normal; color: var(--grey); }
+
+        .mind {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: clamp(0.75rem, 2.5vw, 1.75rem);
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        .mind-panel {
+            flex: 1;
+            max-width: 360px;
+            border-radius: 28px;
+            padding: 1.5rem 1.25rem 1.75rem;
+        }
+
+        .mind-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--grey);
+            margin-bottom: 1.25rem;
+        }
+
+        /* before: chaos */
+        .chaos {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .chip-x {
+            position: absolute;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            padding: 0.5rem 0.875rem;
+            border-radius: 10px;
+            background: #fff;
+            border: 1px solid var(--grey-light);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            white-space: nowrap;
+            animation: jitter 2.6s ease-in-out infinite alternate;
+        }
+
+        .chip-x:nth-child(1) { top: 2%;  left: 4%;  rotate: -5deg; }
+        .chip-x:nth-child(2) { top: 17%; left: 46%; rotate: 4deg;  animation-delay: -0.7s; }
+        .chip-x:nth-child(3) { top: 35%; left: 8%;  rotate: -2deg; animation-delay: -1.4s; }
+        .chip-x:nth-child(4) { top: 52%; left: 42%; rotate: 6deg;  animation-delay: -0.4s; }
+        .chip-x:nth-child(5) { top: 68%; left: 5%;  rotate: -7deg; animation-delay: -1.9s; }
+        .chip-x:nth-child(6) { top: 84%; left: 36%; rotate: 3deg;  animation-delay: -1.1s; }
+
+        @keyframes jitter {
+            from { translate: 0 0; }
+            to   { translate: 0 -7px; }
+        }
+
+        /* after: calm */
+        .calm { display: grid; gap: 0.625rem; }
+
+        .done-row {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--grey-light);
+            border-radius: 12px;
+            padding: 0.6875rem 0.9375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(14px) scale(0.97);
+            transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+        }
+
+        .done-row svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            fill: none;
+            stroke: #34d399;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .done-row .when {
+            margin-left: auto;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--grey);
+        }
+
+        .payoff.done .done-row { opacity: 1; transform: none; }
+        .payoff.done .done-row:nth-child(2) { transition-delay: 0.15s; }
+        .payoff.done .done-row:nth-child(3) { transition-delay: 0.3s; }
+        .payoff.done .done-row:nth-child(4) { transition-delay: 0.45s; }
+
+        .calm-quiet {
+            margin-top: 1rem;
+            font-size: 0.9375rem;
+            color: var(--grey);
+            opacity: 0;
+            transition: opacity 0.8s var(--ease) 0.7s;
+        }
+
+        .payoff.done .calm-quiet { opacity: 1; }
+
+        .mind-arrow {
+            align-self: center;
+            flex-shrink: 0;
+            color: var(--grey);
+        }
+
+        .mind-arrow svg {
+            width: 30px;
+            height: 30px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: clamp(2rem, 6vw, 4.5rem);
+            margin-top: clamp(3rem, 7vw, 5rem);
+        }
+
+        .stat .num {
+            font-size: clamp(2.75rem, 7vw, 4.75rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+
+        .stat .num em {
+            font-style: normal;
+            font-size: 0.4em;
+            font-weight: 600;
+            color: var(--grey);
+            margin-left: 0.2em;
+        }
+
+        .stat .cap {
+            margin-top: 0.625rem;
+            font-size: 0.875rem;
+            color: var(--grey);
+        }
+
+        @media (max-width: 760px) {
+            .mind { flex-direction: column; align-items: center; }
+            .mind-panel { width: 100%; }
+            .mind-arrow svg { transform: rotate(90deg); }
+        }
+
+        /* ============ FEATURES (media rows) ============ */
+        .features {
+            position: relative;
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: clamp(7rem, 13vw, 11rem) clamp(1.5rem, 4vw, 3rem) 0;
+            display: grid;
+            gap: clamp(5rem, 10vw, 8rem);
+        }
+
+        .frow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: clamp(2.5rem, 6vw, 5rem);
+        }
+
+        .frow:nth-child(even) .fmedia { order: 2; }
+
+        .fcopy { text-align: left; }
+
+        .feyebrow {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--grey);
+            margin-bottom: 1rem;
+        }
+
+        .fcopy h3 {
+            font-size: clamp(1.75rem, 3.6vw, 2.625rem);
+            font-weight: 700;
+            letter-spacing: -0.035em;
+            line-height: 1.08;
+            text-wrap: balance;
+        }
+
+        .fcopy p {
+            margin-top: 1.125rem;
+            font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+            color: var(--grey);
+            line-height: 1.65;
+            max-width: 30rem;
+            text-wrap: pretty;
+        }
+
+        .fmedia {
+            justify-self: center;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid var(--grey-light);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+            transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+        }
+
+        .fmedia:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: 0 34px 80px rgba(0, 0, 0, 0.16);
+        }
+
+        .fmedia video, .fmedia img { width: 100%; height: auto; display: block; }
+
+        /* widths tuned per aspect ratio so rows feel balanced */
+        .fmedia.ftall { width: min(310px, 100%); }
+        .fmedia.fwide { width: min(430px, 100%); }
+
+        @media (max-width: 820px) {
+            .frow { grid-template-columns: 1fr; gap: 2rem; }
+            .frow .fmedia, .frow:nth-child(even) .fmedia { order: 0; }
+            .fcopy { text-align: center; }
+            .fcopy p { margin-inline: auto; }
+        }
+
+        /* ============ PROOF ============ */
+        .proof {
+            text-align: center;
+            padding: 0 clamp(1.5rem, 4vw, 3rem) clamp(7rem, 13vw, 11rem);
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        .stars {
+            display: inline-flex;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stars svg { width: 16px; height: 16px; fill: var(--black); }
+
+        .proof blockquote {
+            font-size: clamp(1.125rem, 2vw, 1.375rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.5;
+            text-wrap: balance;
+        }
+
+        .proof cite {
+            display: block;
+            margin-top: 1.25rem;
+            font-style: normal;
+            font-size: 0.8125rem;
+            color: var(--grey);
+        }
+
+        /* ============ FINAL ============ */
+        .final {
+            position: relative;
+            text-align: center;
+            padding: 0 1.5rem clamp(9rem, 16vw, 13rem);
+        }
+
+        .final-panel {
+            display: inline-block;
+            padding: clamp(2rem, 5vw, 3rem) clamp(2rem, 6vw, 3.5rem);
+            border-radius: 32px;
+        }
+
+        .final h2 {
+            font-size: clamp(2.25rem, 6vw, 4.5rem);
+            font-weight: 600;
+            letter-spacing: -0.045em;
+            line-height: 1.05;
+            margin-bottom: 2.5rem;
+            text-wrap: balance;
+        }
+
+        .final h2 em { font-style: normal; color: var(--grey); }
+        .final h2 em:empty::before { content: '\00a0'; }
+        .final h2 em.typing::after {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 0.85em;
+            background: var(--grey);
+            vertical-align: -0.06em;
+            margin-left: 4px;
+            animation: blink 1.05s steps(1) infinite;
+        }
+
+        .final .btn {
+            font-size: 1.0625rem;
+            padding: 1.125rem 2.25rem;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid var(--grey-light);
+            padding: 2rem clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .footer-copyright {
-            font-size: 0.8125rem;
-            color: var(--gray-600);
-        }
-
-        .footer-links {
+        footer nav {
             display: flex;
-            gap: 2rem;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
-        .footer-links a {
+        footer a, footer span, footer p {
             font-size: 0.8125rem;
-            color: var(--gray-600);
+            color: var(--grey);
             text-decoration: none;
-            transition: color var(--transition);
         }
 
-        .footer-links a:hover {
-            color: var(--gray-400);
-        }
+        footer a { transition: color 0.3s ease; }
+        footer a:hover { color: var(--black); }
 
-        /* ============================================
-           SCROLL ANIMATIONS
-           ============================================ */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        /* ============ MOTION ============ */
+        @keyframes lineUp { to { transform: translateY(0); } }
 
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
-
-        @keyframes rise {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(16px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
-        @media (max-width: 1024px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 3.5rem;
-                padding: 7rem 2.5rem 4rem;
-            }
+        @keyframes blink { 50% { opacity: 0; } }
 
-            .hero-text {
-                order: 2;
-            }
-
-            .hero-visual {
-                order: 1;
-                max-width: 320px;
-                margin: 0 auto;
-            }
-
-            .hero-badge {
-                justify-content: center;
-            }
-
-            .hero-sub {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .hero-cta-group {
-                align-items: center;
-            }
-
-            .hero::before,
-            .hero::after {
-                display: none;
-            }
-
-            .proof-inner {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-                max-width: 500px;
-            }
-
-            .values-grid,
-            .diff-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .diff-col--highlight::before {
-                top: 0;
-                height: 2px;
-                width: 100%;
-                left: 0;
-            }
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 1.1s var(--ease), transform 1.1s var(--ease);
         }
 
-        @media (max-width: 768px) {
-            .nav {
-                padding: 1.25rem 1.5rem;
-            }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
-            .section,
-            .diff-section,
-            .features-section {
-                padding: 6rem 1.5rem;
-            }
-
-            .final-cta {
-                padding: 6rem 1.5rem 7rem;
-            }
-
-            .feature-row {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-label {
-                border-right: none;
-                border-bottom: 1.5px solid var(--border);
-                padding: 1.75rem 2rem 1.25rem;
-            }
-
-            .feature-detail {
-                padding: 1.25rem 2rem 1.75rem;
-            }
-
-            .footer {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 1.5rem;
-            }
+        @media (max-width: 700px) {
+            .glow { filter: blur(65px); opacity: 0.45; }
         }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
+                animation-delay: 0ms !important;
                 transition-duration: 0.01ms !important;
             }
-
-            .reveal {
-                opacity: 1;
-                transform: none;
-            }
+            html { scroll-behavior: auto; }
+            .hero h1 .line span { transform: none; }
+            .chip, .hero-sub, .hero-cta { opacity: 1; }
+            .reveal { opacity: 1; transform: none; }
+            .phone { transform: none !important; }
+            .glare { display: none; }
+            .demo .cursor { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="nav">
-        <a href="/" class="nav-logo">
-            <div class="nav-logo-icon">
-                <img src="app-icon.png" alt="Pocket Cal">
-            </div>
-            <span class="nav-logo-text">Pocket Cal</span>
+    <div class="bar">
+        <a href="/" class="wordmark">
+            <img src="app-icon.png" alt="">
+            <span>Pocket Cal</span>
         </a>
-        <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860" class="nav-cta">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-            </svg>
-            Download
-        </a>
-    </nav>
-
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-text">
-            <div class="hero-badge">
-                <div class="badge-dot"></div>
-                iPhone Calendar
-            </div>
-
-            <h1 class="hero-headline">
-                Open your calendar.<br>
-                <em>Feel calm.</em>
-            </h1>
-
-            <p class="hero-sub">
-                Pocket Cal is the lightweight, customizable iPhone calendar designed for daily clarity — not for managing your life.
-            </p>
-
-            <div class="hero-cta-group">
-                <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860" class="cta-primary">
-                    <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                    </svg>
-                    Download Free on iPhone
-                </a>
-                <span class="cta-microcopy">No account required &middot; iPhone only</span>
-            </div>
-        </div>
-
-        <div class="hero-visual">
-            <div class="phone-glow"></div>
-            <div class="phone-frame">
-                <video
-                    class="phone-video"
-                    autoplay
-                    loop
-                    muted
-                    playsinline
-                    preload="auto"
-                >
-                    <source src="demo-video.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </section>
-
-    <!-- Social Proof -->
-    <div class="proof-strip">
-        <div class="proof-inner">
-            <div class="proof-item reveal">
-                <div class="proof-stars">★★★★★</div>
-                <p class="proof-quote">"Finally deleted Google Calendar. This is what I actually wanted."</p>
-                <span class="proof-author">App Store review</span>
-            </div>
-            <div class="proof-item reveal reveal-delay-1">
-                <div class="proof-stars">★★★★★</div>
-                <p class="proof-quote">"The first calendar that doesn't make me feel behind."</p>
-                <span class="proof-author">App Store review</span>
-            </div>
-            <div class="proof-item reveal reveal-delay-2">
-                <div class="proof-stars">★★★★★</div>
-                <p class="proof-quote">"Feels like it was designed specifically for me."</p>
-                <span class="proof-author">App Store review</span>
-            </div>
-        </div>
+        <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860" class="btn">Get the app</a>
     </div>
 
-    <!-- Value Props -->
-    <section class="section">
-        <p class="section-eyebrow reveal">Why Pocket Cal</p>
-        <h2 class="section-headline reveal">
-            A calendar app that<br>actually fits your life
-        </h2>
-        <p class="section-sub reveal">
-            Most calendar apps are built for organizations. Pocket Cal is built for you — one person, one phone, one day at a time.
+    <header class="hero">
+        <div class="glow glow-a" aria-hidden="true"></div>
+        <div class="glow glow-b" aria-hidden="true"></div>
+        <div class="hero-inner">
+            <div class="hero-copy">
+                <span class="chip glass"><span class="dot" aria-hidden="true"></span>AI-powered · Free on iOS</span>
+                <h1>
+                    <span class="line"><span>Your brain was</span></span>
+                    <span class="line"><span>never meant to</span></span>
+                    <span class="line"><span>be <em>a calendar.</em></span></span>
+                </h1>
+                <p class="hero-sub">
+                    Say it, snap it, forget it. Pocket Cal's AI catches every commitment — the recital, the dentist, the thing you promised your boss — and never drops one. So you can.
+                </p>
+                <div class="hero-cta">
+                    <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860" class="btn">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                        </svg>
+                        Get Pocket Cal — free
+                    </a>
+                    <span class="btn-note">30 seconds to install · No account · No card</span>
+                </div>
+            </div>
+
+            <div class="stage">
+                <div class="glow glow-c" aria-hidden="true"></div>
+                <div class="phone-shadow" aria-hidden="true"></div>
+                <div class="phone" data-rig>
+                    <div class="phone-frame">
+                        <span class="pbtn pbtn-action" aria-hidden="true"></span>
+                        <span class="pbtn pbtn-volup" aria-hidden="true"></span>
+                        <span class="pbtn pbtn-voldn" aria-hidden="true"></span>
+                        <span class="pbtn pbtn-power" aria-hidden="true"></span>
+                        <div class="phone-bezel">
+                            <div class="phone-screen">
+                                <video autoplay loop muted playsinline preload="metadata">
+                                    <source src="media/hero-screen.mp4" type="video/mp4">
+                                </video>
+                                <span class="island" aria-hidden="true"></span>
+                                <span class="glare" aria-hidden="true"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="frow">
+            <figure class="fmedia fwide reveal">
+                <video muted loop playsinline preload="metadata" poster="media/preview-week.jpg">
+                    <source src="media/preview-week.mp4" type="video/mp4">
+                </video>
+            </figure>
+            <div class="fcopy reveal">
+                <p class="feyebrow">The week</p>
+                <h3>Seven days. One calm picture.</h3>
+                <p>Events, tasks, and all-day plans on a single clean grid — with a red line for right now, so you always know exactly where you stand.</p>
+            </div>
+        </div>
+        <div class="frow">
+            <figure class="fmedia ftall reveal">
+                <video muted loop playsinline preload="metadata" poster="media/preview-agenda.jpg">
+                    <source src="media/preview-agenda.mp4" type="video/mp4">
+                </video>
+            </figure>
+            <div class="fcopy reveal">
+                <p class="feyebrow">Up next</p>
+                <h3>Tomorrow, already sorted.</h3>
+                <p>Everything coming at you, in one scroll. Pocket Cal keeps the list ordered while you sleep — so mornings start with coffee, not triage.</p>
+            </div>
+        </div>
+        <div class="frow">
+            <figure class="fmedia ftall reveal">
+                <img src="media/shot-today.webp" alt="Pocket Cal Today view with events and checked-off tasks" loading="lazy" width="760" height="1351">
+            </figure>
+            <div class="fcopy reveal">
+                <p class="feyebrow">Today</p>
+                <h3>Tasks and events, finally on speaking terms.</h3>
+                <p>Your to-dos live right beside your schedule — check them off in place, and if life happens, they quietly roll forward.</p>
+            </div>
+        </div>
+        <div class="frow">
+            <figure class="fmedia fwide reveal">
+                <video muted loop playsinline preload="metadata" poster="media/preview-month.jpg">
+                    <source src="media/preview-month.mp4" type="video/mp4">
+                </video>
+            </figure>
+            <div class="fcopy reveal">
+                <p class="feyebrow">The month</p>
+                <h3>See the busy weeks coming.</h3>
+                <p>The whole month on one screen, every commitment visible. Heavy weeks can't sneak up on you anymore.</p>
+            </div>
+        </div>
+        <div class="frow">
+            <figure class="fmedia ftall reveal">
+                <video muted loop playsinline preload="metadata" poster="media/preview-dark-week.jpg">
+                    <source src="media/preview-dark-week.mp4" type="video/mp4">
+                </video>
+            </figure>
+            <div class="fcopy reveal">
+                <p class="feyebrow">Dark themes</p>
+                <h3>Midnight planning, minus the glare.</h3>
+                <p>For the 11pm "wait — what's tomorrow?" check. Midnight is just one of a whole family of dark themes — each one easy on tired eyes, down to the last pixel.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="theater" id="theater" data-mode="say">
+        <div class="glow glow-d" aria-hidden="true"></div>
+        <h2 class="theater-head reveal">However it reaches you,<br><em>it lands on your calendar.</em></h2>
+        <div class="modes glass reveal" aria-hidden="true">
+            <span class="mode active" data-mode="say"><svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Say it</span>
+            <span class="mode" data-mode="type"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/></svg>Type it</span>
+            <span class="mode" data-mode="snap"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Snap it</span>
+        </div>
+
+        <div class="io glass" aria-live="off">
+            <div class="vis vis-say">
+                <span class="mic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></span>
+                <span class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+                <p class="say-text"><span class="txt"></span><span class="t-cursor"></span></p>
+            </div>
+            <div class="vis vis-type">
+                <div class="field">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/></svg>
+                    <p class="type-text"><span class="txt"></span><span class="t-cursor"></span></p>
+                </div>
+                <p class="field-hint">No formats. No forms. Just words.</p>
+            </div>
+            <div class="vis vis-snap">
+                <div class="flyer" aria-hidden="true">
+                    <div class="flyer-band"></div>
+                    <div class="flyer-line"></div>
+                    <div class="flyer-line hl"></div>
+                    <div class="flyer-line short"></div>
+                    <span class="scanline"></span>
+                </div>
+                <p class="snap-text"><span class="txt"></span></p>
+            </div>
+        </div>
+
+        <div class="flow" aria-hidden="true"><span></span><span></span><span></span></div>
+
+        <div class="t-card" aria-hidden="true">
+            <div class="t-check">
+                <svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>
+                Scheduled
+            </div>
+            <h3 class="t-title">Emma's recital</h3>
+            <p class="t-when">Friday · 5:00 PM</p>
+        </div>
+        <p class="theater-tail">That's it. That's the whole workflow.</p>
+    </section>
+
+    <section class="themes" id="themes">
+        <div class="glow glow-b" aria-hidden="true"></div>
+        <h2 class="themes-head reveal">35+ themes. <em>One that's you.</em></h2>
+        <p class="themes-sub reveal">Light, dark, and everything between — here's a taste of four. Then tune accents and details until it feels like home.</p>
+        <div class="swatches glass reveal" role="tablist" aria-label="Theme picker">
+            <button class="swatch active" data-theme="paper" role="tab" aria-selected="true"><span class="sw" style="background:#fff"></span>Paper</button>
+            <button class="swatch" data-theme="blush" role="tab" aria-selected="false"><span class="sw" style="background:#f9c9d8"></span>Blush</button>
+            <button class="swatch" data-theme="ivory" role="tab" aria-selected="false"><span class="sw" style="background:#faf3dd"></span>Ivory</button>
+            <button class="swatch" data-theme="midnight" role="tab" aria-selected="false"><span class="sw" style="background:#0d1526"></span>Midnight</button>
+            <span class="swatch more" aria-hidden="true">+31 more</span>
+        </div>
+        <div class="theme-stage reveal">
+            <img src="media/theme-paper.webp" data-theme="paper" class="active" alt="Pocket Cal in the Paper theme" width="760" height="1351">
+            <img src="media/theme-blush.webp" data-theme="blush" alt="Pocket Cal in the Blush theme" loading="lazy" width="760" height="1351">
+            <img src="media/theme-ivory.webp" data-theme="ivory" alt="Pocket Cal in the Ivory theme" loading="lazy" width="760" height="1351">
+            <img src="media/theme-midnight.webp" data-theme="midnight" alt="Pocket Cal in the Midnight theme" loading="lazy" width="760" height="1351">
+        </div>
+    </section>
+
+    <section class="manifesto">
+        <p class="reveal">
+            Right now your head is holding forty-seven things. The permission slip. Thursday's dentist. The promise you made in Tuesday's meeting. <em>It's exhausting — and it isn't working.</em>
         </p>
-
-        <div class="values-grid">
-            <div class="value-card reveal">
-                <div class="value-icon">✦</div>
-                <h3 class="value-title">Make it look like you</h3>
-                <p class="value-body">Choose your theme, your layout, your color palette. Your calendar should reflect your style — not look like it came out of a corporate IT department.</p>
-            </div>
-            <div class="value-card reveal reveal-delay-1">
-                <div class="value-icon">◎</div>
-                <h3 class="value-title">See clearly, think clearly</h3>
-                <p class="value-body">A clean daily view that shows exactly what matters. No overloaded sidebars. No calendar layers you never asked for. Just your day, readable at a glance.</p>
-            </div>
-            <div class="value-card reveal reveal-delay-2">
-                <div class="value-icon">⚡</div>
-                <h3 class="value-title">Add events the human way</h3>
-                <p class="value-body">Type it naturally, speak it, or snap a photo of a schedule. Pocket Cal understands how you think — so you never have to fill out a form again.</p>
-            </div>
-            <div class="value-card reveal reveal-delay-3">
-                <div class="value-icon">◻</div>
-                <h3 class="value-title">Yours. Not theirs.</h3>
-                <p class="value-body">Everything stays on your device. No accounts. No sync subscriptions. No behavioral tracking. Your schedule is private by default — the way it should be.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Differentiation -->
-    <section class="diff-section">
-        <p class="section-eyebrow reveal">The honest comparison</p>
-        <h2 class="section-headline reveal">
-            It's not you.<br>Your calendar app is just broken.
-        </h2>
-        <p class="section-sub reveal">
-            Built for enterprises and sold to individuals. There's a better option.
+        <p class="reveal">
+            Hand them to Pocket Cal instead. Speak it, type it, snap the school flyer — the AI reads it, gets it, and files it in the right place <em>before you've put your phone away.</em>
         </p>
-
-        <div class="diff-grid reveal">
-            <div class="diff-col">
-                <span class="diff-tag diff-tag--neutral">Apple Calendar</span>
-                <div class="diff-app-name">Apple Calendar</div>
-                <ul class="diff-items">
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        No customization
-                    </li>
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        Feels generic and impersonal
-                    </li>
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        Manual event entry only
-                    </li>
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        One-size-fits-all layout
-                    </li>
-                </ul>
-            </div>
-
-            <div class="diff-col diff-col--highlight">
-                <span class="diff-tag diff-tag--highlight">Pocket Cal</span>
-                <div class="diff-app-name">Pocket Cal</div>
-                <ul class="diff-items">
-                    <li class="diff-item diff-item--pro">
-                        <span class="diff-item-icon">✓</span>
-                        Fully customizable themes
-                    </li>
-                    <li class="diff-item diff-item--pro">
-                        <span class="diff-item-icon">✓</span>
-                        Feels personal, calm, and yours
-                    </li>
-                    <li class="diff-item diff-item--pro">
-                        <span class="diff-item-icon">✓</span>
-                        Natural language + image input
-                    </li>
-                    <li class="diff-item diff-item--pro">
-                        <span class="diff-item-icon">✓</span>
-                        Lightweight &amp; on-device private
-                    </li>
-                    <li class="diff-item diff-item--pro">
-                        <span class="diff-item-icon">✓</span>
-                        No account. No setup. Just open.
-                    </li>
-                </ul>
-            </div>
-
-            <div class="diff-col">
-                <span class="diff-tag diff-tag--neutral">Google Calendar</span>
-                <div class="diff-app-name">Google Calendar</div>
-                <ul class="diff-items">
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        Information overload
-                    </li>
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        Built for teams, not people
-                    </li>
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        Your data fuels Google's business
-                    </li>
-                    <li class="diff-item diff-item--con">
-                        <span class="diff-item-icon">–</span>
-                        Account required to function
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Feature Highlights -->
-    <section class="features-section">
-        <p class="section-eyebrow reveal">What's inside</p>
-        <h2 class="section-headline reveal">
-            Every detail<br>made intentional
-        </h2>
-        <p class="section-sub reveal">
-            No bloat. No features added for the press release. Just what you need, done well.
+        <p class="reveal">
+            What you get back is rare: a quiet head. You stop rehearsing the week in the shower and start actually being <em>in the room.</em>
         </p>
+        <p class="reveal">
+            Native to Apple. In sync with every calendar you already keep. <em>No forms, no accounts, no noise.</em>
+        </p>
+    </section>
 
-        <div class="features-list reveal">
-            <div class="feature-row">
-                <div class="feature-label">
-                    <div class="feature-label-text">Custom Themes</div>
-                </div>
-                <div class="feature-detail">
-                    <p class="feature-detail-text">
-                        Pick your palette, your style, your vibe. <strong>Your calendar should look like a choice, not a default.</strong> Light, dark, warm, minimal — it's up to you.
-                    </p>
-                </div>
-            </div>
-            <div class="feature-row">
-                <div class="feature-label">
-                    <div class="feature-label-text">Clean Daily View</div>
-                </div>
-                <div class="feature-detail">
-                    <p class="feature-detail-text">
-                        <strong>See your day at a glance, not through a maze.</strong> A focused layout that shows what's next without the noise of what's not relevant right now.
-                    </p>
+    <section class="payoff" id="payoff">
+        <div class="glow glow-f" aria-hidden="true"></div>
+        <h2 class="payoff-head reveal">Your head, <em>before and after.</em></h2>
+
+        <div class="mind reveal">
+            <div class="mind-panel glass">
+                <p class="mind-label">Before</p>
+                <div class="chaos" aria-hidden="true">
+                    <span class="chip-x">permission slip?!</span>
+                    <span class="chip-x">dentist… tue?</span>
+                    <span class="chip-x">gift for Sam</span>
+                    <span class="chip-x">bake sale — when??</span>
+                    <span class="chip-x">call the plumber</span>
+                    <span class="chip-x">soccer 9am??</span>
                 </div>
             </div>
-            <div class="feature-row">
-                <div class="feature-label">
-                    <div class="feature-label-text">Natural Input</div>
-                </div>
-                <div class="feature-detail">
-                    <p class="feature-detail-text">
-                        Just say "coffee with James on Friday at 10" or snap a photo of that flyer. <strong>Pocket Cal reads it and adds it.</strong> No forms. No friction.
-                    </p>
-                </div>
+            <div class="mind-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
             </div>
-            <div class="feature-row">
-                <div class="feature-label">
-                    <div class="feature-label-text">On-Device Privacy</div>
+            <div class="mind-panel glass">
+                <p class="mind-label">After</p>
+                <div class="calm">
+                    <div class="done-row"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>Emma's recital<span class="when">Fri · 5:00</span></div>
+                    <div class="done-row"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>Dentist<span class="when">Tue · 3:00</span></div>
+                    <div class="done-row"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>Bake sale<span class="when">Thu · May 14</span></div>
+                    <div class="done-row"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>Soccer<span class="when">Sat · 9:00</span></div>
                 </div>
-                <div class="feature-detail">
-                    <p class="feature-detail-text">
-                        Your schedule stays on your device. <strong>No cloud sync required. No account needed. No one else reads your calendar.</strong> Simple as that.
-                    </p>
-                </div>
+                <p class="calm-quiet">Everything caught. Nothing on you.</p>
             </div>
-            <div class="feature-row">
-                <div class="feature-label">
-                    <div class="feature-label-text">Lightweight &amp; Fast</div>
-                </div>
-                <div class="feature-detail">
-                    <p class="feature-detail-text">
-                        Opens instantly. Stays fast. <strong>Built to do one thing beautifully — not ten things adequately.</strong> No subscriptions. No bloat.
-                    </p>
-                </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat reveal">
+                <p class="num"><span data-from="0" data-to="3">0</span><em>sec</em></p>
+                <p class="cap">from thought to scheduled</p>
+            </div>
+            <div class="stat reveal">
+                <p class="num"><span data-from="47" data-to="0">47</span></p>
+                <p class="cap">commitments dropped</p>
+            </div>
+            <div class="stat reveal">
+                <p class="num"><span data-from="0" data-to="100">0</span><em>%</em></p>
+                <p class="cap">of your headspace back</p>
             </div>
         </div>
     </section>
 
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <div class="final-cta-inner reveal">
-            <h2 class="final-cta-headline">
-                Your calendar should<br>feel like yours.
-            </h2>
-            <p class="final-cta-sub">
-                It takes 30 seconds to download. No account. No onboarding flow. Just open it, and feel the difference.
-            </p>
-            <div class="final-cta-group">
-                <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860" class="cta-primary">
-                    <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                    </svg>
-                    Download Pocket Cal — Free
-                </a>
-                <span class="cta-secondary-note">iPhone only &middot; iOS 16+ &middot; No account required</span>
-            </div>
+    <section class="proof">
+        <div class="stars reveal" aria-label="Five stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+        </div>
+        <blockquote class="reveal">
+            "It's the first app that actually made my head quieter. I didn't know a calendar could do that."
+        </blockquote>
+        <cite class="reveal">Parent of three · App Store review</cite>
+    </section>
+
+    <section class="final">
+        <div class="glow glow-e" aria-hidden="true"></div>
+        <h2 class="reveal">Forget everything.<br><em id="miss" data-text="Miss nothing." aria-label="Miss nothing."></em></h2>
+        <div class="reveal final-panel glass">
+            <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860" class="btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                Get Pocket Cal — free
+            </a>
+            <span class="btn-note">30 seconds to install · No account · No card · iOS 16+</span>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p class="footer-copyright">&copy; 2026 Pocket Cal</p>
-        <nav class="footer-links">
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/terms">Terms</a>
+    <footer>
+        <nav aria-label="Footer">
+            <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860">App Store</a>
+            <span>·</span>
             <a href="mailto:hello@pocketcal.app">Contact</a>
+            <span>·</span>
+            <a href="/privacy">Privacy</a>
         </nav>
+        <p>© 2026 Pocket Cal</p>
     </footer>
 
     <script>
-        // Scroll reveal
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-        );
+        // Scroll reveals
+        const io = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    io.unobserve(e.target);
+                }
+            }
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        // Cinematic 3D phone rig — scroll sweep + pointer tilt + reactive glare/shadow
+        const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const rig = document.querySelector('[data-rig]');
+        const stage = document.querySelector('.stage');
+        if (rig && stage && !reduced) {
+            const lerp = (a, b, t) => a + (b - a) * t;
+            const clamp01 = (n) => Math.min(1, Math.max(0, n));
 
-        // Autoplay video on iOS (fallback)
-        const video = document.querySelector('.phone-video');
-        if (video) {
-            video.play().catch(() => {
-                video.setAttribute('controls', '');
-            });
+            // current (smoothed) values — start where the CSS transform starts
+            const cur = { rx: 12, ry: -24, ty: 60, tz: -40 };
+            let mx = 0, my = 0;   // pointer influence, -1..1
+            let raf = null;
+
+            const frame = () => {
+                const r = stage.getBoundingClientRect();
+                const p = clamp01((innerHeight - r.top) / (innerHeight + r.height));
+
+                // sweep: enters tilted & turned, straightens mid-view, eases away past
+                const ry = lerp(-30, 16, p) + mx * 6;
+                const rx = lerp(15, -6, p) + my * -4;
+                const ty = lerp(70, -40, p);
+                const tz = Math.sin(p * Math.PI) * 50 - 40;
+
+                cur.ry = lerp(cur.ry, ry, 0.075);
+                cur.rx = lerp(cur.rx, rx, 0.075);
+                cur.ty = lerp(cur.ty, ty, 0.075);
+                cur.tz = lerp(cur.tz, tz, 0.075);
+
+                rig.style.transform =
+                    `translate3d(0, ${cur.ty.toFixed(2)}px, ${cur.tz.toFixed(2)}px) ` +
+                    `rotateX(${cur.rx.toFixed(2)}deg) rotateY(${cur.ry.toFixed(2)}deg)`;
+
+                // glare slides across the glass as the phone turns
+                rig.style.setProperty('--glare', `${(50 - cur.ry * 2.2).toFixed(1)}%`);
+                // ground shadow narrows and fades as the phone tips
+                stage.style.setProperty('--shx', (1 - Math.abs(cur.ry) / 90).toFixed(3));
+                stage.style.setProperty('--sho', (0.85 - Math.abs(cur.ry) / 70).toFixed(3));
+
+                raf = requestAnimationFrame(frame);
+            };
+
+            // only animate while the stage is near the viewport
+            new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    if (!raf) raf = requestAnimationFrame(frame);
+                } else if (raf) {
+                    cancelAnimationFrame(raf);
+                    raf = null;
+                }
+            }, { rootMargin: '300px 0px' }).observe(stage);
+
+            // subtle pointer-follow tilt (mouse only)
+            addEventListener('pointermove', (e) => {
+                if (e.pointerType && e.pointerType !== 'mouse') return;
+                mx = (e.clientX / innerWidth - 0.5) * 2;
+                my = (e.clientY / innerHeight - 0.5) * 2;
+            }, { passive: true });
         }
+
+        // Theater: three input modes play out visually, event card materializes
+        const scenes = [
+            { mode: 'say',  text: '“Emma’s recital Friday at five”',  title: 'Emma’s recital', when: 'Friday · 5:00 PM' },
+            { mode: 'type', text: 'dentist tue 3pm',                  title: 'Dentist',        when: 'Tuesday · 3:00 PM' },
+            { mode: 'snap', text: 'Found: Bake sale — Thu, May 14',   title: 'Bake sale',      when: 'Thursday · May 14' },
+            { mode: 'say',  text: '“Soccer every Saturday, 9am”',     title: 'Soccer',         when: 'Every Saturday · 9:00 AM' }
+        ];
+
+        const theater = document.getElementById('theater');
+        const ioBox  = theater.querySelector('.io');
+        const tabs   = [...theater.querySelectorAll('.mode')];
+        const texts  = {
+            say:  theater.querySelector('.vis-say .txt'),
+            type: theater.querySelector('.vis-type .txt'),
+            snap: theater.querySelector('.vis-snap .txt')
+        };
+        const flow   = theater.querySelector('.flow');
+        const tCard  = theater.querySelector('.t-card');
+        const tTitle = theater.querySelector('.t-title');
+        const tWhen  = theater.querySelector('.t-when');
+
+        const setMode = (m) => {
+            theater.dataset.mode = m;
+            tabs.forEach((t) => t.classList.toggle('active', t.dataset.mode === m));
+        };
+
+        if (reduced) {
+            setMode('say');
+            texts.say.textContent = scenes[0].text;
+            tCard.classList.add('show');
+        } else {
+            let si = 0, started = false;
+
+            const typeInto = (el, str, speed, done) => {
+                let ci = 0;
+                const tick = () => {
+                    el.textContent = str.slice(0, ++ci);
+                    if (ci < str.length) setTimeout(tick, speed + Math.random() * speed);
+                    else done();
+                };
+                tick();
+            };
+
+            const finish = (s) => {
+                flow.classList.add('go');
+                setTimeout(() => {
+                    tTitle.textContent = s.title;
+                    tWhen.textContent  = s.when;
+                    tCard.classList.add('show');
+                }, 550);
+                setTimeout(() => {
+                    tCard.classList.remove('show');
+                    flow.classList.remove('go');
+                    ioBox.classList.remove('speaking', 'scanning', 'scanned');
+                    Object.values(texts).forEach((t) => { t.textContent = ''; });
+                    setTimeout(playScene, 700);
+                }, 3600);
+            };
+
+            const playScene = () => {
+                const s = scenes[si % scenes.length];
+                si++;
+                setMode(s.mode);
+
+                if (s.mode === 'say') {
+                    ioBox.classList.add('speaking');
+                    setTimeout(() => typeInto(texts.say, s.text, 42, () => {
+                        ioBox.classList.remove('speaking');
+                        finish(s);
+                    }), 550);
+                } else if (s.mode === 'type') {
+                    setTimeout(() => typeInto(texts.type, s.text, 55, () => finish(s)), 550);
+                } else {
+                    ioBox.classList.add('scanning');
+                    setTimeout(() => {
+                        ioBox.classList.add('scanned');
+                        typeInto(texts.snap, s.text, 18, () => finish(s));
+                    }, 1550);
+                }
+            };
+
+            new IntersectionObserver((entries, obs) => {
+                if (entries[0].isIntersecting && !started) {
+                    started = true;
+                    playScene();
+                    obs.disconnect();
+                }
+            }, { threshold: 0.35 }).observe(theater);
+        }
+
+        // Themes: swatch switcher with auto-cycle until first interaction
+        const themesSec = document.getElementById('themes');
+        if (themesSec) {
+            const swatches = [...themesSec.querySelectorAll('.swatch[data-theme]')];
+            const slides   = [...themesSec.querySelectorAll('.theme-stage img')];
+            const order    = swatches.map((s) => s.dataset.theme);
+            let ti = 0, auto = null;
+
+            const setTheme = (name) => {
+                ti = order.indexOf(name);
+                swatches.forEach((s) => {
+                    const on = s.dataset.theme === name;
+                    s.classList.toggle('active', on);
+                    s.setAttribute('aria-selected', on);
+                });
+                slides.forEach((im) => im.classList.toggle('active', im.dataset.theme === name));
+            };
+
+            swatches.forEach((s) => s.addEventListener('click', () => {
+                clearInterval(auto);
+                auto = null;
+                setTheme(s.dataset.theme);
+            }));
+
+            if (!reduced) {
+                new IntersectionObserver((entries, obs) => {
+                    if (!entries[0].isIntersecting) return;
+                    obs.disconnect();
+                    auto = setInterval(() => {
+                        if (!document.hidden) setTheme(order[(ti + 1) % order.length]);
+                    }, 3200);
+                }, { threshold: 0.4 }).observe(themesSec);
+            }
+        }
+
+        // Payoff: calm rows pop in + stats count up
+        const payoff = document.getElementById('payoff');
+        if (payoff) {
+            const nums = [...payoff.querySelectorAll('.num span[data-to]')];
+            const runCounts = () => {
+                nums.forEach((n) => {
+                    const from = +n.dataset.from, to = +n.dataset.to;
+                    const t0 = performance.now(), dur = 1400;
+                    const step = (t) => {
+                        const p = Math.min(1, (t - t0) / dur);
+                        const e = 1 - Math.pow(1 - p, 3); // ease-out cubic
+                        n.textContent = Math.round(from + (to - from) * e);
+                        if (p < 1) requestAnimationFrame(step);
+                    };
+                    requestAnimationFrame(step);
+                });
+            };
+
+            if (reduced) {
+                payoff.classList.add('done');
+                nums.forEach((n) => { n.textContent = n.dataset.to; });
+            } else {
+                new IntersectionObserver((entries, obs) => {
+                    if (!entries[0].isIntersecting) return;
+                    obs.disconnect();
+                    setTimeout(() => payoff.classList.add('done'), 700);
+                    runCounts();
+                }, { threshold: 0.3 }).observe(payoff);
+            }
+        }
+
+        // Feature media: play preview videos only while on screen
+        const shots = document.querySelectorAll('.fmedia video');
+        if (shots.length) {
+            const vio = new IntersectionObserver((entries) => {
+                entries.forEach((e) => {
+                    if (e.isIntersecting && !reduced) e.target.play().catch(() => {});
+                    else e.target.pause();
+                });
+            }, { threshold: 0.25 });
+            shots.forEach((v) => vio.observe(v));
+        }
+
+        // Final headline types itself into view
+        const miss = document.getElementById('miss');
+        if (miss) {
+            const text = miss.dataset.text;
+            if (reduced) {
+                miss.textContent = text;
+            } else {
+                new IntersectionObserver((entries, obs) => {
+                    if (!entries[0].isIntersecting) return;
+                    obs.disconnect();
+                    miss.classList.add('typing');
+                    let ci = 0;
+                    const tick = () => {
+                        miss.textContent = text.slice(0, ++ci);
+                        if (ci < text.length) setTimeout(tick, 65);
+                        else setTimeout(() => miss.classList.remove('typing'), 1600);
+                    };
+                    setTimeout(tick, 350);
+                }, { threshold: 0.6 }).observe(miss);
+            }
+        }
+
+        // Video autoplay fallback
+        const v = document.querySelector('video');
+        if (v) v.play().catch(() => {});
     </script>
 </body>
 </html>
