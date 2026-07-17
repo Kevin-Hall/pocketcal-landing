@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Pocket Cal</title>
+    <meta name="description" content="Pocket Cal's privacy policy. Your calendar is yours — never sold, never used for ads, never used to train AI models.">
+    <link rel="icon" href="app-icon.png">
+    <link rel="apple-touch-icon" href="app-icon.png">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --white: #FFFFFF;
+            --black: #0A0A0A;
+            --grey:  #8A8A8A;
+            --grey-light: #E9E9E9;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        ::selection { background: var(--black); color: var(--white); }
+
+        .bar {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem clamp(1.5rem, 4vw, 3rem);
+            background: color-mix(in srgb, var(--white) 58%, transparent);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+        }
+
+        .wordmark {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .wordmark img {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+        }
+
+        main {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 9rem clamp(1.5rem, 4vw, 3rem) 5rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .updated {
+            color: var(--grey);
+            font-size: 0.95rem;
+            margin: 0.75rem 0 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 2.5rem 0 0.75rem;
+        }
+
+        p, li {
+            font-size: 1.02rem;
+            color: #3d3d3d;
+        }
+
+        p + p { margin-top: 0.9rem; }
+
+        ul {
+            padding-left: 1.4rem;
+            margin: 0.75rem 0;
+            display: grid;
+            gap: 0.45rem;
+        }
+
+        a { color: var(--black); text-underline-offset: 3px; }
+        a:hover { opacity: 0.7; }
+
+        .note {
+            color: var(--grey);
+            font-size: 0.9rem;
+            margin-top: 2.5rem;
+        }
+
+        footer {
+            border-top: 1px solid var(--grey-light);
+            padding: 2.5rem clamp(1.5rem, 4vw, 3rem) 3.5rem;
+            text-align: center;
+        }
+
+        footer nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        footer a, footer span, footer p {
+            color: var(--grey);
+            font-size: 0.92rem;
+            text-decoration: none;
+        }
+
+        footer a { transition: color 0.3s ease; }
+        footer a:hover { color: var(--black); }
+    </style>
+</head>
+<body>
+    <div class="bar">
+        <a class="wordmark" href="/">
+            <img src="app-icon.png" alt="">
+            Pocket Cal
+        </a>
+    </div>
+
+    <main>
+        <h1>Privacy Policy</h1>
+        <p class="updated">Effective July 16, 2026 · Applies to the Pocket Cal iOS and iPadOS app</p>
+
+        <p>Pocket Cal ("the app") is built and operated by Kevin Hall. This
+        policy explains what data the app touches, why, and what never
+        happens with it. The short version: your calendar is yours. Pocket
+        Cal uses your data only to provide the calendar and AI features you
+        see in the app — never for advertising, never sold, never used to
+        train AI models.</p>
+
+        <h2>Data the app accesses</h2>
+        <ul>
+            <li><strong>Calendars &amp; reminders on your device</strong> —
+            read and written through Apple's EventKit, with your permission,
+            to display and manage your schedule. This data stays on your
+            device and in your own calendar accounts.</li>
+            <li><strong>Google user data (if you connect Google
+            Calendar)</strong> — see the dedicated section below.</li>
+            <li><strong>Microsoft account data (if you connect Microsoft 365
+            / Outlook)</strong> — calendars, events, and event attachments,
+            accessed through the Microsoft Graph API solely to sync your
+            calendar two-way within the app.</li>
+            <li><strong>Photos &amp; camera (optional features)</strong> —
+            only when you actively pick or take a photo. Processing (like
+            subject cut-outs) happens on-device.</li>
+            <li><strong>Approximate location (optional)</strong> — used only
+            to show a local weather forecast inside the app's assistant.</li>
+        </ul>
+
+        <h2>Google user data</h2>
+        <p>If you choose to sign in with Google, Pocket Cal requests access
+        to Google Calendar (and, for attachments you add, Google Drive file
+        access limited to files the app creates). This data is used
+        exclusively to:</p>
+        <ul>
+            <li>display your Google Calendar events inside Pocket Cal,</li>
+            <li>create, edit, move, and delete events you manage in the app
+            (two-way sync), and</li>
+            <li>attach files you choose to your own events via Google
+            Drive.</li>
+        </ul>
+        <p>Google user data is processed on your device. Access tokens are
+        stored in the iOS Keychain on your device only. Pocket Cal does not
+        operate servers that receive, store, or process your Google user
+        data, and it is never transferred to third parties.</p>
+        <p><strong>Limited Use disclosure:</strong> Pocket Cal's use and
+        transfer of information received from Google APIs adheres to the
+        <a href="https://developers.google.com/terms/api-services-user-data-policy">Google
+        API Services User Data Policy</a>, including the Limited Use
+        requirements. Specifically: Google user data is used only to provide
+        the user-facing calendar features described above; it is not used
+        for advertising; it is not sold; it is not used to train generalized
+        AI or machine-learning models; and no humans read it except with
+        your explicit consent, for security purposes, or to comply with
+        law.</p>
+
+        <h2>AI features</h2>
+        <p>When you use AI features (natural-language event creation, the
+        Co-Pilot chat), the text you type or dictate — and, if you have
+        enhanced cloud reasoning enabled, a summary of relevant schedule
+        context — is sent to an AI processing service to generate the
+        response, then discarded. You can disable cloud processing in
+        Settings → AI Assistant, keeping chat fully on-device. You can also
+        exclude event titles from any cloud request. AI inputs are never
+        used to train models.</p>
+
+        <h2>What Pocket Cal never does</h2>
+        <ul>
+            <li>No selling of your data, to anyone, ever.</li>
+            <li>No advertising or ad-tracking of any kind.</li>
+            <li>No training AI models on your calendar or messages.</li>
+            <li>No collecting your data on our own servers — Pocket Cal is a
+            client app; your data lives on your device and in your own
+            accounts.</li>
+        </ul>
+
+        <h2>Analytics</h2>
+        <p>The app records anonymous, aggregate feature-usage signals (for
+        example, "a share card was created") to understand what's useful.
+        These contain no calendar content, no personal identifiers, and
+        cannot be tied to you.</p>
+
+        <h2>Data retention &amp; deletion</h2>
+        <p>Calendar data lives in your calendar accounts and on your device
+        — deleting the app removes all app-local data, including attachments
+        and cached AI context. Disconnecting a Google or Microsoft account
+        in the app deletes its tokens from your Keychain immediately. You
+        can additionally revoke Pocket Cal's access at
+        <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>
+        or <a href="https://account.live.com/consent/Manage">account.live.com/consent/Manage</a>.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about this policy or your data:
+        <a href="mailto:hello@pocketcal.app">hello@pocketcal.app</a></p>
+
+        <p class="note">Changes to this policy will be posted on this page
+        with an updated effective date.</p>
+    </main>
+
+    <footer>
+        <nav aria-label="Footer">
+            <a href="https://apps.apple.com/us/app/pocket-cal-smart-planner/id6759330860">App Store</a>
+            <span>·</span>
+            <a href="mailto:hello@pocketcal.app">Contact</a>
+            <span>·</span>
+            <a href="/privacy">Privacy</a>
+        </nav>
+        <p>© 2026 Pocket Cal</p>
+    </footer>
+</body>
+</html>
