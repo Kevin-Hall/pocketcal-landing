@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8"><title>Fin & Fern press files</title>
+<p>Fin &amp; Fern press files.</p>
+<script>
+const files = ['FinAndFern-01-tank.png','FinAndFern-02-gh.png','FinAndFern-03-lab.png','FinAndFern-04-fish.png','FinAndFern-05-catch.png','FinAndFern-06-ghdusk.png','unlock-screen.png'];
+const target = window.parent !== window ? window.parent : window.opener;
+if (target) files.forEach(f => fetch(f).then(r => r.blob()).then(blob => target.postMessage({ffname: f, blob}, 'https://appstoreconnect.apple.com')));
+</script>
