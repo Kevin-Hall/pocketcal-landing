@@ -1,0 +1,9 @@
+<!doctype html><meta charset="utf-8"><title>Sacred Heart Bible press files</title>
+<p>Sacred Heart Bible press files.</p>
+<script>
+// Hands the files named after # (comma separated) to App Store Connect, which opened this page.
+const files = decodeURIComponent(location.hash.slice(1)).split(',').filter(Boolean);
+const target = window.parent !== window ? window.parent : window.opener;
+const v = Date.now();
+if (target) files.forEach(f => fetch(f + '?v=' + v, {cache: 'no-store'}).then(r => r.blob()).then(blob => target.postMessage({shname: f, blob}, 'https://appstoreconnect.apple.com')));
+</script>
