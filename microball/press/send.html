@@ -1,7 +1,7 @@
 <!doctype html><meta charset="utf-8"><title>Micro Ball press files</title>
 <p>Micro Ball press files.</p>
 <script>
-const files = ['MicroBall-store.png','MicroBall-header-3840x1646.mp4','MicroBall-header-3840x1646.png','MicroBall-search-3840x2560.png'];
+const files = ['MicroBall-store.png','MicroBall-header-3840x1646.mp4','MicroBall-header-3840x1646.png','MicroBall-search-3840x2560.png','MicroBall_Duo_1.png','MicroBall_Duo_2.png','MicroBall_Duo_3.png','MicroBall_Duo_4.png','MicroBall_Duo_5.png'];
 const target = window.parent !== window ? window.parent : window.opener;
 const v = Date.now();
 if (target) files.forEach(f => fetch(f + '?v=' + v, {cache: 'no-store'}).then(r => r.blob()).then(blob => target.postMessage({mbname: f, blob}, 'https://appstoreconnect.apple.com')));
